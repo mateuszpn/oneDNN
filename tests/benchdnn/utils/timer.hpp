@@ -19,6 +19,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #define TIME_FUNC(func, res, name) \
     do { \
@@ -45,7 +46,7 @@
 namespace timer {
 
 struct timer_t {
-    enum mode_t { min = 0, avg = 1, max = 2, sum = 3, n_modes };
+    enum mode_t { min = 0, avg = 1, max = 2, sum = 3, median = 4, n_modes };
 
     timer_t() { reset(); }
 
@@ -69,7 +70,22 @@ struct timer_t {
 
     double ms(mode_t mode = min) const {
         if (!times()) return 0; // nothing to report
-        return ms_[mode] / (mode == avg ? times() : 1);
+        // return ms_[mode] / (mode == avg ? times() : 1);
+        switch (mode) {
+            case min: return ms_[min];
+            case avg: return ms_[avg] / times_;
+            case max: return ms_[max];
+            case sum: return ms_[sum];
+            case median: {
+                if (all_ms_.empty()) return 0;
+                assert(std::is_sorted(all_ms_.begin(), all_ms_.end()));
+                size_t mid = all_ms_.size() / 2;
+                return all_ms_.size() % 2 == 0
+                        ? (all_ms_[mid - 1] + all_ms_[mid]) / 2
+                        : all_ms_[mid];
+            }
+            default: return 0; // should not happen
+        }
     }
 
     double sec(mode_t mode = min) const { return ms(mode) / 1e3; }
@@ -86,6 +102,7 @@ struct timer_t {
     int times_;
     uint64_t ticks_[n_modes], ticks_start_;
     double ms_[n_modes], ms_start_;
+    std::vector<double> all_ms_; // Store all measured times in ms
 };
 
 // Designated timers to support benchdnn performance reporting and general time

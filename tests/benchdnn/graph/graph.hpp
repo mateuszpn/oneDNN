@@ -55,9 +55,9 @@ struct settings_t : public base_settings_t {
     std::vector<std::map<size_t, std::string>> op_kind_map {
             {{SIZE_MAX, "default"}}};
 
-    const char *perf_template_csv = "perf,%engine%,%DESC%,%-time%,%0time%";
+    const char *perf_template_csv = "perf,%engine%,%DESC%,%-time%,%0time%,%1time%";
     static constexpr const char *perf_template_def
-            = "perf,%engine%,%prb%,%-time%,%0time%";
+            = "perf,%engine%,%prb%,%-time%,%0time%,%1time%";
 
     void reset() { *this = settings_t(perf_template); }
 };

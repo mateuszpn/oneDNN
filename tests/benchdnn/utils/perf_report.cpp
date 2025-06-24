@@ -55,7 +55,7 @@ void base_perf_report_t::handle_option(std::ostream &s, const char *&option,
     double unit = 1e0;
     char c = *option;
 
-    if (c == '-' || c == '0' || c == '+') {
+    if (c == '-' || c == '0' || c == '+' || c == '1') {
         user_mode = modifier2mode(c);
         mode = user_mode;
         c = *(++option);

@@ -190,9 +190,10 @@ int main(int argc, char **argv) {
                 = benchdnn_stat.ms.find(timer::names::perf_timer);
         if (perf_timer != benchdnn_stat.ms.end()) {
             const auto &perf_timer_stats = perf_timer->second;
-            printf("total perf: min(ms):%g avg(ms):%g\n",
+            printf("total perf: min(ms):%g avg(ms):%g median(ms):%g\n",
                     perf_timer_stats[timer::timer_t::min],
-                    perf_timer_stats[timer::timer_t::avg]);
+                    perf_timer_stats[timer::timer_t::avg],
+                    perf_timer_stats[timer::timer_t::median]);
         }
     }
 

@@ -87,6 +87,7 @@ private:
         if (c == '-') return timer::timer_t::min;
         if (c == '0') return timer::timer_t::avg;
         if (c == '+') return timer::timer_t::max;
+        if (c == '1') return timer::timer_t::median;
         return timer::timer_t::min;
     }
 

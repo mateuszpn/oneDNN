@@ -51,6 +51,7 @@ void timer_t::reset() {
     for (int i = 0; i < n_modes; ++i)
         ms_[i] = 0;
     ms_start_ = 0;
+    all_ms_.clear();
 
     start();
 }
@@ -86,6 +87,9 @@ void timer_t::stop(int add_times, int64_t add_ticks, double add_ms) {
             = times_ ? std::max(ticks_[mode_t::max], d_ticks) : d_ticks;
 
     times_ += add_times;
+
+    auto pos = std::lower_bound(all_ms_.begin(), all_ms_.end(), d_ms);
+    all_ms_.insert(pos, d_ms);
 }
 
 void timer_t::stamp(int add_times) {
